@@ -238,16 +238,34 @@ static ssize_t modes_show(struct device *device,
 	return written;
 }
 
+int oneplus_panel_status = 0;
+static ssize_t power_status_show(struct device *dev,
+				struct device_attribute *attr, char *buf)
+{
+	return sprintf(buf, "%d\n", oneplus_panel_status);
+}
+
+static ssize_t power_status_store(struct device *dev,
+				struct device_attribute *attr,
+				const char *buf, size_t count)
+{
+	sscanf(buf, "%d", &oneplus_panel_status);
+
+	return count;
+}
+
 static DEVICE_ATTR_RW(status);
 static DEVICE_ATTR_RO(enabled);
 static DEVICE_ATTR_RO(dpms);
 static DEVICE_ATTR_RO(modes);
+static DEVICE_ATTR_RW(power_status);
 
 static struct attribute *connector_dev_attrs[] = {
 	&dev_attr_status.attr,
 	&dev_attr_enabled.attr,
 	&dev_attr_dpms.attr,
 	&dev_attr_modes.attr,
+	&dev_attr_power_status.attr,
 	NULL
 };
 
